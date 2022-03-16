@@ -4,6 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GrapheFileReaderTest {
@@ -20,7 +24,9 @@ class GrapheFileReaderTest {
 
     @Test
     public void testReadFile(){
-        GrapheFileReader.readFile("graphe.txt");
-        assertEquals(1, 1);
+        Optional<Map<Integer, List<Integer>>> mapOfInts = GrapheFileReader.readFile("graphe.txt");
+        if (mapOfInts.isPresent()){
+            System.out.println(mapOfInts.stream().toList());
+        }
     }
 }
