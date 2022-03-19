@@ -1,30 +1,75 @@
 package GraphePackage;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GrapheFileReader {
 
-    public static Optional<Map<Integer, List<Integer>>> readFile(String fileLocation) {
-        try(Stream<String> lines = Files.lines(Path.of(fileLocation))) {
-             return Optional.of(lines.map(line -> Arrays.stream(line.split(" "))
-                    .map(Integer::parseInt).toList())
-                    .toList()
-                    .stream()
-                    .collect(Collectors.toMap(intlist -> intlist.get(0), intlist -> intlist
-                            .stream()
-                            .skip(1)
-                            .toList())));
-        }catch (IOException ioException){
-            System.out.println("An error occurred while reading the file.");
+    /**
+     * Function that checks if the file is adapted to be a graph.
+     * For now it consist to looks if every character in the file is a number.
+     * @param fileLocation
+     * @return false if char in column 2, true if not
+     */
+    public static boolean correctGrapheFile(String fileLocation) {
+        try {
+            File file = new File(fileLocation);
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = bufferedReader.readLine();
+            while (line != null){
+                if (line.length() > 2){
+                    try {
+                        String[] lineList = line.split(" ");
+                        for (String elem : lineList){
+                            Integer.parseInt(elem);
+                        }
+                    } catch (NumberFormatException nfe) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+                line = bufferedReader.readLine();
+            }
+            return true;
+        } catch (IOException ioe){
+            System.out.println("A problem happened while reading the file");
+        }
+        return false;
+    }
+
+
+    /**
+     * Function that takes a string as a file to read and generate a map of GraphState as key and String as values.
+     * The values are representing the dependencies of the states, so they have to be add after that function.
+     * @param fileLocation
+     * @return Map, key = GraphState, value = List of String
+     */
+    public static Optional<Map<GrapheState, Set<Integer>>> readFile(String fileLocation) {
+        if (correctGrapheFile(fileLocation)){
+            try(Stream<String> lines = Files.lines(Path.of(fileLocation))) {
+                return Optional.of(lines.map(line -> Arrays.stream(line.split(" "))
+                                .map(Integer::parseInt).toList())
+                        .toList()
+                        .stream()
+                        .collect(Collectors.toMap(streamList -> new GrapheState(streamList.get(0), streamList.get(1)), streamList -> streamList
+                                .stream()
+                                .skip(2)
+                                .collect(Collectors.toSet()))));
+            }catch (IOException ioException){
+                System.out.println("An error occurred while reading the file.");
+            }
+        } else{
+            System.out.println("Please make sure to give an adapted file. Wrong file : " + fileLocation);
         }
         return Optional.empty();
     }
+
+
 }

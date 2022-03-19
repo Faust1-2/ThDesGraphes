@@ -8,7 +8,10 @@ class GrapheTest {
 
     @Test
     public void testMapIntToMapState(){
-        Graphe.mapIntToMapState("graphe.txt");
+        System.out.println("\n---------------Graphe Test---------------\n");
+        Graphe graphe = new Graphe("graphe.txt");
+        graphe.mapIntToMapState();
+        System.out.println(graphe);
     }
 
 }
