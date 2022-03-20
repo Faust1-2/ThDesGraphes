@@ -1,21 +1,34 @@
 package GraphePackage;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Graphe {
-    private GrapheState firstState;
+    private final GrapheState firstState;
     private GrapheState lastState;
-    private String fileLocation;
+    private final String fileLocation;
+
 
     public Graphe(String fileLocation) {
         this.firstState = new GrapheState(0, 0);
         this.fileLocation = fileLocation;
     }
 
-    public void mapIntToMapState(){
+    public List<GrapheState> getAllStates(){
+        Set<GrapheState> grapheStateSet = new HashSet<>(firstState.getSuccessors());
+
+        for (GrapheState state : firstState.getSuccessors()){
+            state.returnAllSuccessors(grapheStateSet);
+        }
+
+        List<GrapheState> grapheList = grapheStateSet.stream()
+                .sorted(Comparator.comparing(GrapheState::getStateName))
+                .toList();
+
+        return grapheList;
+    }
+
+    public void initializeGraphe(){
         try {
             Map<GrapheState, Set<Integer>> grapheStringsMap = GrapheFileReader.readFile(fileLocation).orElseThrow();
             lastState = new GrapheState(grapheStringsMap.size()+1, 0);
@@ -27,7 +40,7 @@ public class Graphe {
                 int count = 0;
                 for (Set<Integer> value : grapheStringsMap.values()){
 
-                    if (key.isGrapheNameInList(value)){
+                    if (key.isGrapheNameInSet(value)){
                         GrapheState selectedState = getKeyFromValue(grapheStringsMap, value).orElseThrow();
                         key.addSuccessor(selectedState);
                         selectedState.addPredecessor(key);
@@ -46,6 +59,11 @@ public class Graphe {
         }
     }
 
+    public void setAllRanks(){
+        getAllStates().forEach(GrapheState::setRank);
+
+    }
+
     public Optional<GrapheState> getKeyFromValue(Map<GrapheState, Set<Integer>> mapToCheck, Set<Integer> value){
         for (GrapheState key : mapToCheck.keySet()){
             if (mapToCheck.get(key) == value){
@@ -59,15 +77,7 @@ public class Graphe {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        Set<GrapheState> grapheStateSet = new HashSet<>(firstState.getSuccessors());
-
-        for (GrapheState state : firstState.getSuccessors()){
-            state.returnAllSuccessors(grapheStateSet);
-        }
-
-        List<GrapheState> grapheList = grapheStateSet.stream()
-                .sorted(Comparator.comparing(GrapheState::getStateName))
-                .toList();
+        List<GrapheState> grapheList = getAllStates();
 
         s.append(firstState);
         for (GrapheState state : grapheList){
@@ -75,6 +85,10 @@ public class Graphe {
         }
 
         return s.toString();
+    }
+
+    public String adjacenceMatrix(){
+        return "";
     }
 
 }

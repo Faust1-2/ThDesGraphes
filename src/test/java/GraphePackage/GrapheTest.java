@@ -10,7 +10,8 @@ class GrapheTest {
     public void testMapIntToMapState(){
         System.out.println("\n---------------Graphe Test---------------\n");
         Graphe graphe = new Graphe("graphe.txt");
-        graphe.mapIntToMapState();
+        graphe.initializeGraphe();
+        graphe.setAllRanks();
         System.out.println(graphe);
     }
 
