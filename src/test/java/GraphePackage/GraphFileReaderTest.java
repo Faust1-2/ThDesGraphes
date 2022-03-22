@@ -4,30 +4,28 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GrapheFileReaderTest {
+class GraphFileReaderTest {
 
     @BeforeEach
     void setUp() {
-        System.out.println("GrapheFileReader.setUp...");
+        System.out.println("GraphFileReader.setUp...");
     }
 
     @AfterEach
     void tearDown() {
-        System.out.println("GrapheFileReader.tearDown...");
+        System.out.println("GraphFileReader.tearDown...");
     }
 
     @Test
     public void testReadFile(){
         System.out.println("\n---------------ReadFile test---------------\n");
-        Optional<Map<GrapheState, Set<Integer>>> mapOfInts = GrapheFileReader.readFile("graphe.txt");
+        Optional<Map<GraphState, Set<Integer>>> mapOfInts = GraphFileReader.readFile("graphe.txt");
         if (mapOfInts.isPresent()){
             System.out.println(mapOfInts.stream().toList());
         }
@@ -36,8 +34,8 @@ class GrapheFileReaderTest {
     @Test
     public void correctGrapheFile(){
         System.out.println("\n---------------CorrectGrapheFile test---------------\n");
-        assertFalse(GrapheFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe.txt"));
-        assertTrue(GrapheFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe1.txt"));
-        assertFalse(GrapheFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe2.txt"));
+        assertFalse(GraphFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe.txt"));
+        assertTrue(GraphFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe1.txt"));
+        assertFalse(GraphFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe2.txt"));
     }
 }
