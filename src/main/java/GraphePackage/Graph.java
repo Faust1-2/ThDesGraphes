@@ -74,7 +74,13 @@ public class Graph {
      * Function that set the rank of every state of the graph.
      */
     public void setAllRanks(){
-        getAllStates().forEach(GraphState::setRank);
+        Queue<GraphState> queueRank = new ArrayDeque<>(firstState.getSuccessors());
+        firstState.setRank();
+        while (!queueRank.isEmpty()) {
+            GraphState actState = queueRank.remove();
+            actState.setRank();
+            queueRank.addAll(actState.getSuccessors());
+        }
     }
 
     /**
@@ -227,7 +233,7 @@ public class Graph {
     public boolean circuitDetection() {
 
         System.out.println("* Detection de circuit.");
-        System.out.println("* Methode d'elimination des points d'entrée");
+        System.out.println("* Methode d'elimination des points d'entree");
 
         ArrayList<GraphState> listOfAllStates = new ArrayList<>(getAllStates());
         boolean entryListEmpty = false;
@@ -259,7 +265,7 @@ public class Graph {
 
             } else {
                 if (!listOfAllStates.isEmpty()){
-                    System.out.println("Il n'y a pas de points d'entrée.");
+                    System.out.println("Il n'y a pas de points d'entree.");
                 }
                 entryListEmpty = true;
             }
@@ -282,5 +288,54 @@ public class Graph {
      */
     public List<GraphState> getAllEntryStates(List<GraphState> listOfAllStates){
         return listOfAllStates.stream().filter(GraphState::hasNoPredecessor).toList();
+    }
+
+    /**
+     * Function that check if every state in the graph has no negative duration.
+     * @return true if yes; false otherwise
+     */
+    public boolean hasNoNegativeDuration(){
+        List<GraphState> listOfALlStates = getAllStates();
+        for (GraphState state : listOfALlStates){
+            if (state.getDuration() < 0){
+                System.out.println("Un arc incident negatif a ete detecte.");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Test if the current graph is a scheduling graph.
+     * It means :
+     * <ul>
+     *     <li>Only one entry state. (Created at the graph initialization)</li>
+     *     <li>Only one exit state. (Created at the graph initialization)</li>
+     *     <li>No circuit in the graph. -> circuitDetection function.</li>
+     *     <li>All incidents arcs have the same duration. (The implementation of the graph validates this condition)</li>
+     *     <li>The duration of the first state is equal to zero. (The implementation of the graph validates this condition)</li>
+     *     <li>No negative duration. -> hasNoNegativeDuration function.</li>
+     * </ul>
+     * @return true if scheduling graph; false otherwise
+     */
+    public boolean isSchedulingGraph(){
+        if (!hasNoNegativeDuration() || circuitDetection()){
+            System.out.println("Ce graphe n'est pas un graphe d'ordonnancement.");
+            return false;
+        }
+        System.out.println("Ce graphe est un graphe d'ordonnancement.");
+        return true;
+    }
+
+    public void soonestDate(){
+        Queue<GraphState> queueRank = new ArrayDeque<>(firstState.getSuccessors());
+        Map<Integer, Integer> mapOfSoonestDate = new HashMap<>();
+        mapOfSoonestDate.put(firstState.getStateName(), firstState.getDuration());
+        while (!queueRank.isEmpty()) {
+            GraphState actState = queueRank.remove();
+            actState.getSoonestDate(mapOfSoonestDate);
+            queueRank.addAll(actState.getSuccessors());
+        }
+        System.out.println(mapOfSoonestDate);
     }
 }

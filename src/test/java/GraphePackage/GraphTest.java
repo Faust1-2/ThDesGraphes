@@ -15,6 +15,7 @@ class GraphTest {
         graph.initializeGraphe();
         graph.setAllRanks();
         System.out.println(graph);
+        System.out.println(graph.circuitDetection());
     }
 
     @Test
@@ -61,4 +62,20 @@ class GraphTest {
         assertFalse(graph.circuitDetection());
     }
 
+    @Test
+    public void testSchedulingGraph(){
+        System.out.println("\n---------------Scheduling graph Test---------------\n");
+        Graph graph = new Graph("src/test/java/GraphePackage/graphe3.txt");
+        graph.initializeGraphe();
+        System.out.println(graph);
+        assertFalse(graph.isSchedulingGraph());
+    }
+
+    @Test
+    public void testSoonestDate(){
+        System.out.println("\n---------------Soonest date Test---------------\n");
+        Graph graph = new Graph("src/test/java/GraphePackage/Graphe-C2.txt");
+        graph.initializeGraphe();
+        graph.soonestDate();
+    }
 }

@@ -158,4 +158,26 @@ public class GraphState {
         }
     }
 
+    public boolean isAPredecessor(Integer stateName){
+        if (!predecessors.isEmpty()) {
+            for (GraphState predessState : predecessors){
+                if (predessState.getStateName() == stateName)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public void getSoonestDate(Map<Integer, Integer> mapOfSoonestDates){
+        int minDuration = -1;
+        for (Integer key : mapOfSoonestDates.keySet()){
+            if (isAPredecessor(key)){
+                int actDuration = mapOfSoonestDates.get(key);
+                if (minDuration < 0 || actDuration < minDuration){
+                    minDuration = actDuration;
+                }
+            }
+        }
+        mapOfSoonestDates.put(this.stateName, minDuration + this.duration);
+    }
 }
