@@ -68,7 +68,7 @@ class GraphTest {
         Graph graph = new Graph("src/test/java/GraphePackage/graphe3.txt");
         graph.initializeGraphe();
         System.out.println(graph);
-        assertFalse(graph.isSchedulingGraph());
+        assertFalse(graph.isSchedulingGraph(false));
     }
 
     @Test
@@ -76,6 +76,18 @@ class GraphTest {
         System.out.println("\n---------------Soonest date Test---------------\n");
         Graph graph = new Graph("src/test/java/GraphePackage/Graphe-C2.txt");
         graph.initializeGraphe();
+        graph.setAllRanks();
+        graph.valueMatrix();
+        System.out.println(graph.soonestDate());
+    }
+
+    @Test
+    public void testLatestDate(){
+        System.out.println("\n---------------Latest date Test---------------\n");
+        Graph graph = new Graph("src/test/java/GraphePackage/Graphe-C3.txt");
+        graph.initializeGraphe();
+        graph.setAllRanks();
         graph.soonestDate();
+        graph.latestDate();
     }
 }

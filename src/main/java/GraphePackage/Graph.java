@@ -83,6 +83,32 @@ public class Graph {
         }
     }
 
+    public String getAllRanksString(){
+        List<GraphState> listOfStates = getAllStates();
+
+        StringBuilder name = new StringBuilder();
+        StringBuilder rank = new StringBuilder();
+
+        name.append("Etat |");
+        rank.append("Rang |");
+
+        for (GraphState state : listOfStates) {
+
+            int nameInt = state.getStateName(); // First part -- Name
+            if (nameInt < 10) name.append("   ").append(nameInt).append(" |");
+            else if (nameInt < 100) name.append("  ").append(nameInt).append(" |");
+            else name.append(" ").append(nameInt).append(" |");
+
+            int rankInt = state.getRank();
+            if (rankInt < 10) rank.append("   ").append(rankInt).append(" |");
+            else if (rankInt < 100) rank.append("  ").append(rankInt).append(" |");
+            else rank.append(" ").append(rankInt).append(" |");
+
+        }
+
+        return name.append("\n").append(rank).toString();
+    }
+
     /**
      * Tool function to get a key of a map from the value of the map.
      * @param mapToCheck : the map to check
@@ -228,9 +254,10 @@ public class Graph {
     /**
      * Function to check if the graph has a circuit or not.
      * Use the entry states elimination method.
+     * Show the details of the method.
      * @return false if there is no circuit; true otherwise.
      */
-    public boolean circuitDetection() {
+    public boolean circuitDetectionDetailed() {
 
         System.out.println("* Detection de circuit.");
         System.out.println("* Methode d'elimination des points d'entree");
@@ -282,6 +309,42 @@ public class Graph {
     }
 
     /**
+     * Function to check if the graph has a circuit or not.
+     * Use the entry states elimination method.
+     * @return false if there is no circuit; true otherwise.
+     */
+    public boolean circuitDetection() {
+
+        ArrayList<GraphState> listOfAllStates = new ArrayList<>(getAllStates());
+        boolean entryListEmpty = false;
+        while (!entryListEmpty){
+            List<GraphState> listOfEntries = getAllEntryStates(listOfAllStates);
+            if (!listOfEntries.isEmpty()) {
+                for (GraphState entry : listOfEntries) {
+                    List<GraphState> entrySuccessor = entry.getSuccessors();
+                    for (GraphState successor : entrySuccessor) {
+                        successor.removePredecessor(entry);
+                    }
+                    listOfAllStates.remove(entry);
+                }
+
+            } else {
+                entryListEmpty = true;
+            }
+        }
+
+        if (listOfAllStates.isEmpty()) {
+            System.out.println("-> Il n'y a pas de circuit");
+            return false;
+        } else {
+            System.out.println("-> Il y a un circuit");
+            return true;
+        }
+
+    }
+
+
+    /**
      * Function that returns all entries of the current graph.
      * @param listOfAllStates, a list composed of EVERY state of the graph?
      * @return List of every entry of the graph.
@@ -292,17 +355,18 @@ public class Graph {
 
     /**
      * Function that check if every state in the graph has no negative duration.
+     * @param detail : if true, show the details of the method
      * @return true if yes; false otherwise
      */
-    public boolean hasNoNegativeDuration(){
+    public boolean hasNegativeDuration(boolean detail){
         List<GraphState> listOfALlStates = getAllStates();
         for (GraphState state : listOfALlStates){
             if (state.getDuration() < 0){
-                System.out.println("Un arc incident negatif a ete detecte.");
-                return false;
+                if (detail) System.out.println("Un arc incident negatif a ete detecte.");
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -316,26 +380,65 @@ public class Graph {
      *     <li>The duration of the first state is equal to zero. (The implementation of the graph validates this condition)</li>
      *     <li>No negative duration. -> hasNoNegativeDuration function.</li>
      * </ul>
+     * @param detail : if true, show the details of the method
      * @return true if scheduling graph; false otherwise
      */
-    public boolean isSchedulingGraph(){
-        if (!hasNoNegativeDuration() || circuitDetection()){
-            System.out.println("Ce graphe n'est pas un graphe d'ordonnancement.");
-            return false;
+    public boolean isSchedulingGraph(boolean detail){
+        if (detail) {
+            if (hasNegativeDuration(true) || circuitDetectionDetailed()) {
+                System.out.println("Ce graphe n'est pas un graphe d'ordonnancement.");
+                return false;
+            }
+            System.out.println("Ce graphe est un graphe d'ordonnancement.");
+        } else {
+            return !hasNegativeDuration(false) && !circuitDetection();
         }
-        System.out.println("Ce graphe est un graphe d'ordonnancement.");
         return true;
     }
 
-    public void soonestDate(){
-        Queue<GraphState> queueRank = new ArrayDeque<>(firstState.getSuccessors());
-        Map<Integer, Integer> mapOfSoonestDate = new HashMap<>();
-        mapOfSoonestDate.put(firstState.getStateName(), firstState.getDuration());
-        while (!queueRank.isEmpty()) {
-            GraphState actState = queueRank.remove();
-            actState.getSoonestDate(mapOfSoonestDate);
-            queueRank.addAll(actState.getSuccessors());
+    public String soonestDate(){
+
+        StringBuilder statesnames = new StringBuilder();
+        StringBuilder statesSoonestDate = new StringBuilder();
+
+        statesnames.append(firstState.getStateName());
+        statesSoonestDate.append(firstState.getSoonestDate());
+
+        ArrayList<GraphState> listOfStatePerRank = new ArrayList<>(getAllStates().stream().sorted(Comparator.comparing(GraphState::getRank)).toList());
+        listOfStatePerRank.remove(0);
+
+        for (GraphState state : listOfStatePerRank){
+            state.setSoonestDate();
+            statesnames.append(" ").append(state.getStateName());
+            statesSoonestDate.append(" ").append(state.getSoonestDate());
         }
-        System.out.println(mapOfSoonestDate);
+
+        return statesnames.append("\n").append(statesSoonestDate).toString();
+    }
+
+    public String latestDate(){
+
+        StringBuilder statesnames = new StringBuilder();
+        StringBuilder statesLatestDate = new StringBuilder();
+
+        ArrayList<GraphState> listOfStatePerRank = new ArrayList<>(getAllStates().stream().sorted(Comparator.comparing(GraphState::getRank)).toList());
+        Collections.reverse(listOfStatePerRank);
+        listOfStatePerRank.remove(0);
+
+        System.out.println(listOfStatePerRank);
+        lastState.setLatestDate();
+        statesnames.append(lastState.getStateName());
+        statesLatestDate.append(lastState.getLatestDate());
+
+        for (GraphState state : listOfStatePerRank){
+            state.setLatestDate();
+            statesnames.append(" ").append(state.getStateName());
+            statesLatestDate.append(" ").append(state.getLatestDate());
+        }
+
+        System.out.println(statesnames);
+        System.out.println(statesLatestDate);
+
+        return statesnames.append("\n").append(statesLatestDate).toString();
     }
 }

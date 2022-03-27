@@ -10,6 +10,8 @@ public class GraphState {
     private final int stateName;
     private final int duration;
     private int rank;
+    private int soonestDate = 0;
+    private int latestDate = -1;
 
     public GraphState(int stateName, int duration) {
         this.stateName = stateName;
@@ -168,16 +170,34 @@ public class GraphState {
         return false;
     }
 
-    public void getSoonestDate(Map<Integer, Integer> mapOfSoonestDates){
-        int minDuration = -1;
-        for (Integer key : mapOfSoonestDates.keySet()){
-            if (isAPredecessor(key)){
-                int actDuration = mapOfSoonestDates.get(key);
-                if (minDuration < 0 || actDuration < minDuration){
-                    minDuration = actDuration;
+    public void setSoonestDate(){
+        for (GraphState predecessor : predecessors){
+            int computeDate = predecessor.getSoonestDate() + predecessor.getDuration();
+            if (computeDate > soonestDate) {
+                soonestDate = computeDate;
+            }
+        }
+    }
+
+    public int getSoonestDate(){
+        return soonestDate;
+    }
+
+    public void setLatestDate(){
+        if (successors.isEmpty()){
+            latestDate = soonestDate;
+        }
+        else {
+            for (GraphState successor : successors) {
+                int computeDate = successor.getLatestDate() - duration;
+                if (latestDate < 0 || computeDate < latestDate) {
+                    latestDate = computeDate;
                 }
             }
         }
-        mapOfSoonestDates.put(this.stateName, minDuration + this.duration);
+    }
+
+    public int getLatestDate(){
+        return latestDate;
     }
 }

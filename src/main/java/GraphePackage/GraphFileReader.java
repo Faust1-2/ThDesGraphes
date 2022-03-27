@@ -9,6 +9,13 @@ import java.util.stream.Stream;
 
 public class GraphFileReader {
 
+    public static int listTables() {
+        return Stream.of(new File("Tables").listFiles())
+                .filter(file -> !file.isDirectory())
+                .map(File::getName)
+                .collect(Collectors.toSet()).size();
+    }
+
     /**
      * Function that checks if the file is adapted to be a graph.
      * For now it consist to looks if every character in the file is a number.
