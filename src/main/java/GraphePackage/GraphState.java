@@ -135,7 +135,7 @@ public class GraphState {
     public void returnAllSuccessors(Set<GraphState> grapheStateSet){
         if (this.hasSuccessor()) {
             for (GraphState successor : successors){
-                if (successor.getStateName() != stateName){ // To prevent looping on itself
+                if (successor.getStateName() != stateName && !grapheStateSet.contains(successor)){ // To prevent looping on itself
                     grapheStateSet.add(successor);
                     successor.returnAllSuccessors(grapheStateSet);
                 }
@@ -200,4 +200,6 @@ public class GraphState {
     public int getLatestDate(){
         return latestDate;
     }
+
+    public int getMargin() { return latestDate-soonestDate;}
 }

@@ -75,11 +75,26 @@ public class Graph {
      */
     public void setAllRanks(){
         Queue<GraphState> queueRank = new ArrayDeque<>(firstState.getSuccessors());
+        Set<GraphState> computedStates = new HashSet<>();
         firstState.setRank();
         while (!queueRank.isEmpty()) {
+            boolean isRankable = true;
             GraphState actState = queueRank.remove();
-            actState.setRank();
-            queueRank.addAll(actState.getSuccessors());
+            for (GraphState state : actState.getPredecessors()){
+                if (queueRank.contains(state)) isRankable = false;
+            }
+            if (isRankable) {
+                actState.setRank();
+                computedStates.add(actState);
+                for (GraphState state : actState.getSuccessors()) {
+                    if (!computedStates.contains(state)) {
+                        queueRank.add(state);
+                    }
+                }
+
+            } else {
+                queueRank.add(actState);
+            }
         }
     }
 
@@ -169,7 +184,7 @@ public class Graph {
      * First line : state names; First column : state names.
      * The lines are the resultLinkList of the adjacencyMatrix.
      */
-    public String showAdjacencyMatrix(){
+    public void showAdjacencyMatrix(){
         HashMap<Integer, List<Integer>> adjacencyMatrix = computeAdjacencyMatrix();
         StringBuilder s = new StringBuilder("    ");
         Set<Integer> steSet = adjacencyMatrix.keySet();
@@ -198,14 +213,14 @@ public class Graph {
             }
             s.append('\n');
         }
-        return s.toString();
+        System.out.println(s.toString());
     }
 
     /**
      * Function that create the value matrix of the graph, show it and return it.
      * @return String, the value matrix.
      */
-    public String valueMatrix(){
+    public void valueMatrix(){
         List<GraphState> listOfStates = getAllStates();
         List<Integer> listOFAllNames = listOfStates.stream().map(GraphState::getStateName).toList();
 
@@ -248,7 +263,6 @@ public class Graph {
             s.append('\n');
         }
         System.out.println(s);
-        return s.toString();
     }
 
     /**
@@ -440,5 +454,28 @@ public class Graph {
         System.out.println(statesLatestDate);
 
         return statesnames.append("\n").append(statesLatestDate).toString();
+    }
+
+    public String marginDate(){
+        ArrayList<GraphState> listOfStates = new ArrayList<>(getAllStates());
+        StringBuilder sNames = new StringBuilder();
+        StringBuilder sMargin = new StringBuilder();
+
+        sNames.append("Sommet |");
+        sMargin.append("Marge |");
+
+        for (GraphState state : listOfStates) {
+            int nameInt = state.getStateName(); // First part -- Name
+            if (nameInt < 10) sNames.append("   ").append(nameInt).append(" |");
+            else if (nameInt < 100) sNames.append("  ").append(nameInt).append(" |");
+            else sNames.append(" ").append(nameInt).append(" |");
+
+            int margin = state.getMargin();
+            if (margin < 10) sMargin.append("   ").append(margin).append(" |");
+            else if (margin < 100) sMargin.append("  ").append(margin).append(" |");
+            else sMargin.append(" ").append(margin).append(" |");
+        }
+
+        return sNames.append("\n").append(sMargin).toString();
     }
 }

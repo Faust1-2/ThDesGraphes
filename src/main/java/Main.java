@@ -35,9 +35,10 @@ public class Main {
             }
             Graph graphTable = new Graph("Tables/table " + choice.toString() + ".txt");
             graphTable.initializeGraphe();
-
+            System.out.println(graphTable);
             boolean isScheduling = graphTable.isSchedulingGraph(false);
             if (isScheduling) graphTable.setAllRanks();
+
             boolean stayOnThisGraph = true;
 
             while (stayOnThisGraph) {
@@ -102,9 +103,12 @@ public class Main {
                     case 7:
                         System.out.println(graphTable.soonestDate());
                         System.out.println(graphTable.latestDate());
-                        System.out.println("Margin to be implemented");
+                        System.out.println(graphTable.marginDate());
                         break;
                     case 8:
+                        stayOnThisGraph = false;
+                        break;
+                    case 9:
                         stayOnThisGraph = false;
                         running = false;
                         break;
