@@ -75,6 +75,7 @@ public class Graph {
      */
     public void setAllRanks(){
         Queue<GraphState> queueRank = new ArrayDeque<>(firstState.getSuccessors());
+        System.out.println("Successors : " + queueRank);
         Set<GraphState> computedStates = new HashSet<>();
         firstState.setRank();
         while (!queueRank.isEmpty()) {
@@ -410,8 +411,19 @@ public class Graph {
         return true;
     }
 
-    public String soonestDate(){
+    public void createSoonestDate(){
 
+        ArrayList<GraphState> listOfStatePerRank = new ArrayList<>(getAllStates().stream().sorted(Comparator.comparing(GraphState::getRank)).toList());
+        listOfStatePerRank.remove(0);
+        System.out.println(listOfStatePerRank);
+
+        for (GraphState state : listOfStatePerRank){
+            state.setSoonestDate();
+        }
+
+    }
+
+    public String getSoonestDate() {
         StringBuilder statesnames = new StringBuilder();
         StringBuilder statesSoonestDate = new StringBuilder();
 
@@ -422,7 +434,6 @@ public class Graph {
         listOfStatePerRank.remove(0);
 
         for (GraphState state : listOfStatePerRank){
-            state.setSoonestDate();
             statesnames.append(" ").append(state.getStateName());
             statesSoonestDate.append(" ").append(state.getSoonestDate());
         }
@@ -430,7 +441,21 @@ public class Graph {
         return statesnames.append("\n").append(statesSoonestDate).toString();
     }
 
-    public String latestDate(){
+    public void createLatestDate(){
+
+
+        ArrayList<GraphState> listOfStatePerRank = new ArrayList<>(getAllStates().stream().sorted(Comparator.comparing(GraphState::getRank)).toList());
+        Collections.reverse(listOfStatePerRank);
+        listOfStatePerRank.remove(0);
+
+        lastState.setLatestDate();
+
+        for (GraphState state : listOfStatePerRank){
+            state.setLatestDate();
+        }
+    }
+
+    public String getLatestDate(){
 
         StringBuilder statesnames = new StringBuilder();
         StringBuilder statesLatestDate = new StringBuilder();
@@ -439,19 +464,13 @@ public class Graph {
         Collections.reverse(listOfStatePerRank);
         listOfStatePerRank.remove(0);
 
-        System.out.println(listOfStatePerRank);
-        lastState.setLatestDate();
         statesnames.append(lastState.getStateName());
         statesLatestDate.append(lastState.getLatestDate());
 
         for (GraphState state : listOfStatePerRank){
-            state.setLatestDate();
             statesnames.append(" ").append(state.getStateName());
             statesLatestDate.append(" ").append(state.getLatestDate());
         }
-
-        System.out.println(statesnames);
-        System.out.println(statesLatestDate);
 
         return statesnames.append("\n").append(statesLatestDate).toString();
     }
@@ -462,7 +481,7 @@ public class Graph {
         StringBuilder sMargin = new StringBuilder();
 
         sNames.append("Sommet |");
-        sMargin.append("Marge |");
+        sMargin.append("Marge  |");
 
         for (GraphState state : listOfStates) {
             int nameInt = state.getStateName(); // First part -- Name

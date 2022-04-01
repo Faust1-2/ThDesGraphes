@@ -37,7 +37,13 @@ public class Main {
             graphTable.initializeGraphe();
             System.out.println(graphTable);
             boolean isScheduling = graphTable.isSchedulingGraph(false);
-            if (isScheduling) graphTable.setAllRanks();
+            graphTable = new Graph("Tables/table " + choice.toString() + ".txt");
+            graphTable.initializeGraphe();
+            if (isScheduling){
+                graphTable.setAllRanks();
+                graphTable.createSoonestDate();
+                graphTable.createLatestDate();
+            }
 
             boolean stayOnThisGraph = true;
 
@@ -91,18 +97,18 @@ public class Main {
                         break;
                     case 5:
                         if (isScheduling) {
-                            System.out.println(graphTable.soonestDate());
+                            System.out.println(graphTable.getSoonestDate());
                         } else {
                             stayOnThisGraph = false;
                             running = false;
                         }
                         break;
                     case 6:
-                        System.out.println(graphTable.latestDate());
+                        System.out.println(graphTable.getLatestDate());
                         break;
                     case 7:
-                        System.out.println(graphTable.soonestDate());
-                        System.out.println(graphTable.latestDate());
+                        System.out.println(graphTable.getSoonestDate());
+                        System.out.println(graphTable.getLatestDate());
                         System.out.println(graphTable.marginDate());
                         break;
                     case 8:
