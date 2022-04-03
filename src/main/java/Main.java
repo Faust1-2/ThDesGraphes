@@ -1,10 +1,6 @@
 import GraphePackage.*;
 
-import java.io.File;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Main {
 
@@ -18,7 +14,7 @@ public class Main {
         int tableSize = GraphFileReader.listTables();
         boolean running = true;
         while (running) {
-            Integer choice = -1;
+            int choice = -1;
             while (choice <= 0 || choice > tableSize) {
                 for (int table = 0; table<tableSize; table++) {
                     System.out.println((table + 1) + ". table " + (table + 1));
@@ -33,18 +29,22 @@ public class Main {
                     System.out.println("Veuillez réessayer en rentrant le numéro du fichier que vous souhaitez lire.");
                 }
             }
-            Graph graphTable = new Graph("Tables/table " + choice.toString() + ".txt");
-            graphTable.initializeGraphe();
-            boolean isScheduling = graphTable.isSchedulingGraph(false);
-            graphTable = new Graph("Tables/table " + choice.toString() + ".txt");
-            graphTable.initializeGraphe();
-            if (isScheduling){
-                graphTable.setAllRanks();
-                graphTable.createSoonestDate();
-                graphTable.createLatestDate();
-            }
+            Graph graphTable = new Graph("Tables/table " + choice + ".txt");
+            boolean isInitialezed = graphTable.initializeGraphe();
+            boolean isScheduling = false;
+            boolean stayOnThisGraph = false;
+            if (isInitialezed) {
+                isScheduling = graphTable.isSchedulingGraph(false);
+                graphTable = new Graph("Tables/table " + choice + ".txt");
+                graphTable.initializeGraphe();
+                if (isScheduling){
+                    graphTable.setAllRanks();
+                    graphTable.createSoonestDate();
+                    graphTable.createLatestDate();
+                }
 
-            boolean stayOnThisGraph = true;
+                stayOnThisGraph = true;
+            }
 
             while (stayOnThisGraph) {
                 choice = -1;
