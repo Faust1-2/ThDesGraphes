@@ -75,7 +75,6 @@ public class Graph {
      */
     public void setAllRanks(){
         Queue<GraphState> queueRank = new ArrayDeque<>(firstState.getSuccessors());
-        System.out.println("Successors : " + queueRank);
         Set<GraphState> computedStates = new HashSet<>();
         firstState.setRank();
         while (!queueRank.isEmpty()) {
@@ -349,10 +348,8 @@ public class Graph {
         }
 
         if (listOfAllStates.isEmpty()) {
-            System.out.println("-> Il n'y a pas de circuit");
             return false;
         } else {
-            System.out.println("-> Il y a un circuit");
             return true;
         }
 
@@ -415,7 +412,6 @@ public class Graph {
 
         ArrayList<GraphState> listOfStatePerRank = new ArrayList<>(getAllStates().stream().sorted(Comparator.comparing(GraphState::getRank)).toList());
         listOfStatePerRank.remove(0);
-        System.out.println(listOfStatePerRank);
 
         for (GraphState state : listOfStatePerRank){
             state.setSoonestDate();
@@ -424,8 +420,8 @@ public class Graph {
     }
 
     public String getSoonestDate() {
-        StringBuilder statesnames = new StringBuilder();
-        StringBuilder statesSoonestDate = new StringBuilder();
+        StringBuilder statesnames = new StringBuilder("Nom  | ");
+        StringBuilder statesSoonestDate = new StringBuilder("Date | ");
 
         statesnames.append(firstState.getStateName());
         statesSoonestDate.append(firstState.getSoonestDate());
@@ -434,8 +430,20 @@ public class Graph {
         listOfStatePerRank.remove(0);
 
         for (GraphState state : listOfStatePerRank){
-            statesnames.append(" ").append(state.getStateName());
-            statesSoonestDate.append(" ").append(state.getSoonestDate());
+            int name = state.getStateName();
+            int date = state.getSoonestDate();
+            if (name < 10)
+                statesnames.append("   ").append(name).append(" |");
+            else if (name < 100)
+                statesnames.append("  ").append(name).append(" |");
+            else
+                statesnames.append(" ").append(state.getStateName()).append(" |");
+            if (date < 10)
+                statesSoonestDate.append("   ").append(date).append(" |");
+            else if (date < 100 )
+                statesSoonestDate.append("  ").append(date).append(" |");
+            else
+                statesSoonestDate.append(" ").append(date).append(" |");
         }
 
         return statesnames.append("\n").append(statesSoonestDate).toString();
@@ -457,8 +465,8 @@ public class Graph {
 
     public String getLatestDate(){
 
-        StringBuilder statesnames = new StringBuilder();
-        StringBuilder statesLatestDate = new StringBuilder();
+        StringBuilder statesnames = new StringBuilder("Nom  | ");
+        StringBuilder statesLatestDate = new StringBuilder("Date | ");
 
         ArrayList<GraphState> listOfStatePerRank = new ArrayList<>(getAllStates().stream().sorted(Comparator.comparing(GraphState::getRank)).toList());
         Collections.reverse(listOfStatePerRank);
@@ -468,8 +476,21 @@ public class Graph {
         statesLatestDate.append(lastState.getLatestDate());
 
         for (GraphState state : listOfStatePerRank){
-            statesnames.append(" ").append(state.getStateName());
-            statesLatestDate.append(" ").append(state.getLatestDate());
+            int name = state.getStateName();
+            int date = state.getLatestDate();
+            if (name < 10)
+                statesnames.append("   ").append(name).append(" |");
+            else if (name < 100)
+                statesnames.append("  ").append(name).append(" |");
+            else
+                statesnames.append(" ").append(state.getStateName()).append(" |");
+            if (date < 10)
+                statesLatestDate.append("   ").append(date).append(" |");
+            else if (date < 100 )
+                statesLatestDate.append("  ").append(date).append(" |");
+            else
+                statesLatestDate.append(" ").append(date).append(" |");
+
         }
 
         return statesnames.append("\n").append(statesLatestDate).toString();

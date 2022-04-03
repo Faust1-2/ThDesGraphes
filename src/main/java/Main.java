@@ -35,7 +35,6 @@ public class Main {
             }
             Graph graphTable = new Graph("Tables/table " + choice.toString() + ".txt");
             graphTable.initializeGraphe();
-            System.out.println(graphTable);
             boolean isScheduling = graphTable.isSchedulingGraph(false);
             graphTable = new Graph("Tables/table " + choice.toString() + ".txt");
             graphTable.initializeGraphe();
@@ -107,8 +106,11 @@ public class Main {
                         System.out.println(graphTable.getLatestDate());
                         break;
                     case 7:
+                        System.out.println("\nDate au plus tôt :");
                         System.out.println(graphTable.getSoonestDate());
+                        System.out.println("\nDate au plus tard :");
                         System.out.println(graphTable.getLatestDate());
+                        System.out.println("\nMarge :");
                         System.out.println(graphTable.marginDate());
                         break;
                     case 8:

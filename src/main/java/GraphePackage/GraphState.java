@@ -20,6 +20,12 @@ public class GraphState {
         this.successors = new ArrayList<>();
     }
 
+    public GraphState(int stateName, int duration, List<GraphState> successors) {
+        this.stateName = stateName;
+        this.duration = duration;
+        this.successors = successors;
+    }
+
     public int getStateName() {
         return stateName;
     }
