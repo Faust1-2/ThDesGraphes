@@ -1,7 +1,6 @@
 package GraphePackage;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GraphState {
 
@@ -18,12 +17,6 @@ public class GraphState {
         this.duration = duration;
         this.predecessors = new ArrayList<>();
         this.successors = new ArrayList<>();
-    }
-
-    public GraphState(int stateName, int duration, List<GraphState> successors) {
-        this.stateName = stateName;
-        this.duration = duration;
-        this.successors = successors;
     }
 
     public int getStateName() {
@@ -116,13 +109,13 @@ public class GraphState {
      * @param setToCheck set of integers, integers being the name of the state (stateName)
      * @return true if yes; false otherwise
      */
-    public boolean isThisGrapheInSet(Set<Integer> setToCheck){
+    public boolean isThisGraphInSet(Set<Integer> setToCheck){
         return setToCheck.contains(stateName);
     }
 
     /**
      * Check if the integer represents the name of a successor of this state.
-     * @param steName
+     * @param steName state name which is used to be compared to one of the predecessor
      * @return true if yes; false otherwise
      */
     public boolean isThisSuccessor(Integer steName) {
@@ -164,16 +157,6 @@ public class GraphState {
         } else {
             rank = 0;
         }
-    }
-
-    public boolean isAPredecessor(Integer stateName){
-        if (!predecessors.isEmpty()) {
-            for (GraphState predessState : predecessors){
-                if (predessState.getStateName() == stateName)
-                    return true;
-            }
-        }
-        return false;
     }
 
     public void setSoonestDate(){

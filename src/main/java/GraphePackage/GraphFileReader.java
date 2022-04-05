@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 public class GraphFileReader {
 
     public static int listTables() {
-        return Stream.of(new File("Tables").listFiles())
+        return Stream.of(Objects.requireNonNull(new File("Tables").listFiles()))
                 .filter(file -> !file.isDirectory())
                 .map(File::getName)
                 .collect(Collectors.toSet()).size();
@@ -18,9 +18,9 @@ public class GraphFileReader {
 
     /**
      * Function that checks if the file is adapted to be a graph.
-     * For now it consist to looks if every character in the file is a number.
-     * @param fileLocation
-     * @return false if char in column 2, true if not
+     * For now it consist to looks if every character in the file is a positive number.
+     * @param fileLocation the location of the file on the hard-drive.
+     * @return false if not an integer nor positive, true if not
      */
     public static boolean correctGrapheFile(String fileLocation) {
         try {
@@ -33,7 +33,9 @@ public class GraphFileReader {
                     try {
                         String[] lineList = line.split(" ");
                         for (String elem : lineList){
-                            Integer.parseInt(elem);
+                            int elemInt = Integer.parseInt(elem);
+                            if (elemInt < 0)
+                                return false;
                         }
                     } catch (NumberFormatException nfe) {
                         return false;
@@ -54,7 +56,7 @@ public class GraphFileReader {
     /**
      * Function that takes a string as a file to read and generate a map of GraphState as key and String as values.
      * The values are representing the dependencies of the states, so they have to be add after that function.
-     * @param fileLocation
+     * @param fileLocation the location of the file on the hard-drive.
      * @return Map, key = GraphState, value = List of String
      */
     public static Optional<Map<GraphState, Set<Integer>>> readFile(String fileLocation) {
@@ -72,7 +74,7 @@ public class GraphFileReader {
                 System.out.println("An error occurred while reading the file.");
             }
         } else{
-            System.out.println("Please make sure to give an adapted file. Wrong file : " + fileLocation);
+            System.out.println("\nVeuillez être sûr de fournir un graphe adapté : " + fileLocation + "\n");
         }
         return Optional.empty();
     }

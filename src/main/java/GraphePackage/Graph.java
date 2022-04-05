@@ -38,7 +38,7 @@ public class Graph {
      * Associate the entry states with the first state of the graph, so there is only one entry for the graph.
      * Create a final state wich the successors of every state without natural successors.
      */
-    public void initializeGraphe(){
+    public boolean initializeGraphe(){
         try {
             Map<GraphState, Set<Integer>> grapheStringsMap = GraphFileReader.readFile(fileLocation).orElseThrow();
             lastState = new GraphState(grapheStringsMap.size()+1, 0); // Creation of the last state of the graph.
@@ -50,7 +50,7 @@ public class Graph {
                 int count = 0; // variable to check if a state has successors or no.
                 for (Set<Integer> value : grapheStringsMap.values()){
 
-                    if (key.isThisGrapheInSet(value)){ // Check if this key (state) is one of the predecessors of another state.
+                    if (key.isThisGraphInSet(value)){ // Check if this key (state) is one of the predecessors of another state.
                         GraphState selectedState = getKeyFromValue(grapheStringsMap, value).orElseThrow();
                         key.addSuccessor(selectedState);
                         selectedState.addPredecessor(key);
@@ -63,11 +63,12 @@ public class Graph {
                         key.addSuccessor(lastState);
                     }
                 }
-
             }
+            return true;
         } catch (NoSuchElementException nsee) {
-            System.out.println("End of lecture.");
+            System.out.println("Une erreur a eu lieu. Veuillez choisir un nouveau graphe.\n");
         }
+        return false;
     }
 
     /**
@@ -81,7 +82,10 @@ public class Graph {
             boolean isRankable = true;
             GraphState actState = queueRank.remove();
             for (GraphState state : actState.getPredecessors()){
-                if (queueRank.contains(state)) isRankable = false;
+                if (queueRank.contains(state)) {
+                    isRankable = false;
+                    break;
+                }
             }
             if (isRankable) {
                 actState.setRank();
@@ -178,17 +182,9 @@ public class Graph {
         return finalResultMatrix;
     }
 
-    /**
-     * Function that is used as a toString method of the adjacencyMatrix.
-     * @return String to show.
-     * First line : state names; First column : state names.
-     * The lines are the resultLinkList of the adjacencyMatrix.
-     */
-    public void showAdjacencyMatrix(){
-        HashMap<Integer, List<Integer>> adjacencyMatrix = computeAdjacencyMatrix();
+    public StringBuilder matrixString(Collection<Integer> collection) {
         StringBuilder s = new StringBuilder("    ");
-        Set<Integer> steSet = adjacencyMatrix.keySet();
-        for (Integer i : steSet){
+        for (Integer i : collection){
             if (i < 10){
                 s.append("  ").append(i).append(" ");
             } else if (i < 100) {
@@ -198,6 +194,19 @@ public class Graph {
             }
         }
         s.append('\n');
+        return s;
+    }
+
+    /**
+     * Function that is used as a toString method of the adjacencyMatrix.
+     * First line : state names; First column : state names.
+     * The lines are the resultLinkList of the adjacencyMatrix.
+     */
+    public void showAdjacencyMatrix(){
+
+        HashMap<Integer, List<Integer>> adjacencyMatrix = computeAdjacencyMatrix();
+        Set<Integer> steSet = adjacencyMatrix.keySet();
+        StringBuilder s = matrixString(steSet);
 
         for (Integer i :steSet){
             List<Integer> resultList = adjacencyMatrix.get(i);
@@ -218,23 +227,12 @@ public class Graph {
 
     /**
      * Function that create the value matrix of the graph, show it and return it.
-     * @return String, the value matrix.
      */
     public void valueMatrix(){
         List<GraphState> listOfStates = getAllStates();
         List<Integer> listOFAllNames = listOfStates.stream().map(GraphState::getStateName).toList();
 
-        StringBuilder s = new StringBuilder("    ");
-        for (Integer i : listOFAllNames){
-            if (i < 10){
-                s.append("  ").append(i).append(" ");
-            } else if (i < 100) {
-                s.append(" ").append(i).append(" ");
-            } else {
-                s.append(i).append(" ");
-            }
-        }
-        s.append('\n');
+        StringBuilder s = matrixString(listOFAllNames);
 
         for (GraphState state : listOfStates){
             Integer stateName = state.getStateName();
@@ -347,11 +345,7 @@ public class Graph {
             }
         }
 
-        if (listOfAllStates.isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
+        return !listOfAllStates.isEmpty();
 
     }
 
