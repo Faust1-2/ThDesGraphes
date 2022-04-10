@@ -76,8 +76,9 @@ public class Graph {
      */
     public void setAllRanks(){
         Queue<GraphState> queueRank = new ArrayDeque<>(firstState.getSuccessors());
-        Set<GraphState> computedStates = new HashSet<>();
+
         firstState.setRank();
+
         while (!queueRank.isEmpty()) {
             boolean isRankable = true;
             GraphState actState = queueRank.remove();
@@ -89,12 +90,7 @@ public class Graph {
             }
             if (isRankable) {
                 actState.setRank();
-                computedStates.add(actState);
-                for (GraphState state : actState.getSuccessors()) {
-                    if (!computedStates.contains(state)) {
-                        queueRank.add(state);
-                    }
-                }
+                queueRank.addAll(actState.getSuccessors());
 
             } else {
                 queueRank.add(actState);
@@ -414,14 +410,10 @@ public class Graph {
     }
 
     public String getSoonestDate() {
-        StringBuilder statesnames = new StringBuilder("Nom  | ");
-        StringBuilder statesSoonestDate = new StringBuilder("Date | ");
-
-        statesnames.append(firstState.getStateName());
-        statesSoonestDate.append(firstState.getSoonestDate());
+        StringBuilder statesnames = new StringBuilder("Nom  |");
+        StringBuilder statesSoonestDate = new StringBuilder("Date |");
 
         ArrayList<GraphState> listOfStatePerRank = new ArrayList<>(getAllStates().stream().sorted(Comparator.comparing(GraphState::getRank)).toList());
-        listOfStatePerRank.remove(0);
 
         for (GraphState state : listOfStatePerRank){
             int name = state.getStateName();
@@ -459,15 +451,11 @@ public class Graph {
 
     public String getLatestDate(){
 
-        StringBuilder statesnames = new StringBuilder("Nom  | ");
-        StringBuilder statesLatestDate = new StringBuilder("Date | ");
+        StringBuilder statesnames = new StringBuilder("Nom  |");
+        StringBuilder statesLatestDate = new StringBuilder("Date |");
 
         ArrayList<GraphState> listOfStatePerRank = new ArrayList<>(getAllStates().stream().sorted(Comparator.comparing(GraphState::getRank)).toList());
         Collections.reverse(listOfStatePerRank);
-        listOfStatePerRank.remove(0);
-
-        statesnames.append(lastState.getStateName());
-        statesLatestDate.append(lastState.getLatestDate());
 
         for (GraphState state : listOfStatePerRank){
             int name = state.getStateName();

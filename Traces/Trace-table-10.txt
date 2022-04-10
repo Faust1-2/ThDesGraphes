@@ -1,0 +1,79 @@
+Matrice des valeurs
+
+      0   1   2   3   4   5   6   7   8   9 
+  0   *   0   *   *   *   *   *   *   *   * 
+  1   *   *   2   *   2   2   *   *   *   * 
+  2   *   *   *   3   3   *   *   *   3   * 
+  3   *   *   *   *   *   *   *   5   *   * 
+  4   *   *   *   *   *   6   6   *   6   * 
+  5   *   *   *   *   *   *   2   2   *   * 
+  6   *   *   *   *   *   *   *   *   *   1 
+  7   *   *   *   *   *   *   *   *   6   * 
+  8   *   *   *   *   *   *   *   *   *   1 
+  9   *   *   *   *   *   *   *   *   *   * 
+
+
+Matrice d'adjacence
+
+      0   1   2   3   4   5   6   7   8   9 
+  0   0   1   0   0   0   0   0   0   0   0 
+  1   0   0   1   0   1   1   0   0   0   0 
+  2   0   0   0   1   1   0   0   0   1   0 
+  3   0   0   0   0   0   0   0   1   0   0 
+  4   0   0   0   0   0   1   1   0   1   0 
+  5   0   0   0   0   0   0   1   1   0   0 
+  6   0   0   0   0   0   0   0   0   0   1 
+  7   0   0   0   0   0   0   0   0   1   0 
+  8   0   0   0   0   0   0   0   0   0   1 
+  9   0   0   0   0   0   0   0   0   0   0 
+
+
+Détection de circuit
+
+* Detection de circuit.
+* Methode d'elimination des points d'entree
+Points d'entree : 0 
+Supression des points d'entree
+Sommets restant : 1 2 3 4 5 6 7 8 9 
+Points d'entree : 1 
+Supression des points d'entree
+Sommets restant : 2 3 4 5 6 7 8 9 
+Points d'entree : 2 
+Supression des points d'entree
+Sommets restant : 3 4 5 6 7 8 9 
+Points d'entree : 3 4 
+Supression des points d'entree
+Sommets restant : 5 6 7 8 9 
+Points d'entree : 5 
+Supression des points d'entree
+Sommets restant : 6 7 8 9 
+Points d'entree : 6 7 
+Supression des points d'entree
+Sommets restant : 8 9 
+Points d'entree : 8 
+Supression des points d'entree
+Sommets restant : 9 
+Points d'entree : 9 
+Supression des points d'entree
+Sommets restant : Aucun
+-> Il n'y a pas de circuit
+Ce graphe est un graphe d'ordonnancement.
+
+
+Calcul des rangs
+
+Etat |   0 |   1 |   2 |   3 |   4 |   5 |   6 |   7 |   8 |   9 |
+Rang |   0 |   1 |   2 |   3 |   3 |   4 |   5 |   5 |   6 |   7 |
+
+
+Date au plus tôt :
+Nom  |   0 |   1 |   2 |   3 |   4 |   5 |   6 |   7 |   8 |   9 |
+Date |   0 |   0 |   2 |   5 |   5 |  11 |  13 |  13 |  19 |  20 |
+
+Date au plus tard :
+Nom  |   9 |   8 |   7 |   6 |   5 |   4 |   3 |   2 |   1 |   0 |
+Date |  20 |  19 |  13 |  19 |  11 |   5 |   8 |   2 |   0 |   0 |
+
+Marge :
+Sommet |   0 |   1 |   2 |   3 |   4 |   5 |   6 |   7 |   8 |   9 |
+Marge  |   0 |   0 |   0 |   3 |   0 |   0 |   6 |   0 |   0 |   0 |
