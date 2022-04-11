@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class GraphFileReader {
+public class B3_GraphFileReader {
 
     public static int listTables() {
         return Stream.of(Objects.requireNonNull(new File("Tables").listFiles()))
@@ -54,19 +54,19 @@ public class GraphFileReader {
 
 
     /**
-     * Function that takes a string as a file to read and generate a map of GraphState as key and String as values.
+     * Function that takes a string as a file to read and generate a map of B3_GraphState as key and String as values.
      * The values are representing the dependencies of the states, so they have to be add after that function.
      * @param fileLocation the location of the file on the hard-drive.
-     * @return Map, key = GraphState, value = List of String
+     * @return Map, key = B3_GraphState, value = List of String
      */
-    public static Optional<Map<GraphState, Set<Integer>>> readFile(String fileLocation) {
+    public static Optional<Map<B3_GraphState, Set<Integer>>> readFile(String fileLocation) {
         if (correctGrapheFile(fileLocation)){
             try(Stream<String> lines = Files.lines(Path.of(fileLocation))) {
                 return Optional.of(lines.map(line -> Arrays.stream(line.split(" "))
                                 .map(Integer::parseInt).toList())
                         .toList()
                         .stream()
-                        .collect(Collectors.toMap(streamList -> new GraphState(streamList.get(0), streamList.get(1)), streamList -> streamList
+                        .collect(Collectors.toMap(streamList -> new B3_GraphState(streamList.get(0), streamList.get(1)), streamList -> streamList
                                 .stream()
                                 .skip(2)
                                 .collect(Collectors.toSet()))));

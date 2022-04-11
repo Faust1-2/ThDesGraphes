@@ -2,7 +2,7 @@ import GraphePackage.*;
 
 import java.util.Scanner;
 
-public class Main {
+public class B3_Main {
 
     public static void main(String[] args) {
 
@@ -11,7 +11,7 @@ public class Main {
         System.out.println("Projet de theorie des graphes.");
         System.out.println("Veuillez choisir un des fichiers suivant (préciser uniquement le numéro) : ");
 
-        int tableSize = GraphFileReader.listTables();
+        int tableSize = B3_GraphFileReader.listTables();
         boolean running = true;
         while (running) {
             int choice = -1;
@@ -29,13 +29,13 @@ public class Main {
                     System.out.println("Veuillez réessayer en rentrant le numéro du fichier que vous souhaitez lire.");
                 }
             }
-            Graph graphTable = new Graph("Tables/table " + choice + ".txt");
+            B3_Graph graphTable = new B3_Graph("Tables/table " + choice + ".txt");
             boolean isInitialezed = graphTable.initializeGraphe();
             boolean isScheduling = false;
             boolean stayOnThisGraph = false;
             if (isInitialezed) {
                 isScheduling = graphTable.isSchedulingGraph(false);
-                graphTable = new Graph("Tables/table " + choice + ".txt");
+                graphTable = new B3_Graph("Tables/table " + choice + ".txt");
                 graphTable.initializeGraphe();
                 if (isScheduling){
                     graphTable.setAllRanks();
@@ -48,7 +48,7 @@ public class Main {
 
             while (stayOnThisGraph) {
                 choice = -1;
-                while (choice <= 0 || choice > 9) {
+                while (isScheduling && (choice <= 0 || choice > 10) || !isScheduling && (choice <= 0 || choice > 5)) {
                     System.out.println("Que souhaitez-vous faire ?");
                     System.out.println("    1. Afficher la matrice de valeurs du graphe.");
                     System.out.println("    2. Afficher la matrice d'adjacence du graphe.");
@@ -57,9 +57,10 @@ public class Main {
                         System.out.println("    4. Calculer les rangs des états du graphe.");
                         System.out.println("    5. Afficher les dates au plus tôt.");
                         System.out.println("    6. Afficher les dates au plus tard.");
-                        System.out.println("    7. Afficher les dates au plus tôt, au plus tard, ainsi que la marge.");
-                        System.out.println("    8. Changer de graphe.");
-                        System.out.println("    9. Arrêter le programme.");
+                        System.out.println("    7. Afficher les dates au plus tôt, au plus tard, la marge, ainsi que le chemin critique.");
+                        System.out.println("    8. Afficher le chemin critique.");
+                        System.out.println("    9. Changer de graphe.");
+                        System.out.println("    10. Arrêter le programme.");
                     }
                     else {
                         System.out.println("    4. Changer de graphe.");
@@ -71,25 +72,29 @@ public class Main {
                     } catch (NumberFormatException nfe) {
                         choice = -1;
                     }
-                    if (isScheduling && (choice <= 0 || choice > 9)) {
-                        System.out.println("Veuillez réessayer en rentrant le numéro du fichier que vous souhaitez lire.");
+                    if (isScheduling && (choice <= 0 || choice > 10)) {
+                        System.out.println("Veuillez réessayer en rentrant le numéro du fichier que vous souhaitez lire.\n");
                     } else if (!isScheduling && (choice <= 0 || choice > 5)){
-                        System.out.println("Veuillez réessayer en rentrant le numéro du fichier que vous souhaitez lire.");
+                        System.out.println("Veuillez réessayer en rentrant le numéro du fichier que vous souhaitez lire.\n");
                     }
                 }
                 switch (choice) {
                     case 1:
                         graphTable.valueMatrix();
+                        System.out.println();
                         break;
                     case 2:
                         graphTable.showAdjacencyMatrix();
+                        System.out.println();
                         break;
                     case 3:
                         graphTable.isSchedulingGraph(true);
+                        System.out.println();
                         break;
                     case 4:
                         if (isScheduling) {
                             System.out.println(graphTable.getAllRanksString());
+                            System.out.println();
                         } else {
                             stayOnThisGraph = false;
                         }
@@ -97,6 +102,7 @@ public class Main {
                     case 5:
                         if (isScheduling) {
                             System.out.println(graphTable.getSoonestDate());
+                            System.out.println();
                         } else {
                             stayOnThisGraph = false;
                             running = false;
@@ -104,6 +110,7 @@ public class Main {
                         break;
                     case 6:
                         System.out.println(graphTable.getLatestDate());
+                        System.out.println();
                         break;
                     case 7:
                         System.out.println("\nDate au plus tôt :");
@@ -112,11 +119,18 @@ public class Main {
                         System.out.println(graphTable.getLatestDate());
                         System.out.println("\nMarge :");
                         System.out.println(graphTable.marginDate());
+                        System.out.println();
+                        System.out.println(graphTable.criticalWay());
+                        System.out.println();
                         break;
                     case 8:
-                        stayOnThisGraph = false;
+                        System.out.println(graphTable.criticalWay());
+                        System.out.println();
                         break;
                     case 9:
+                        stayOnThisGraph = false;
+                        break;
+                    case 10:
                         stayOnThisGraph = false;
                         running = false;
                         break;

@@ -14,18 +14,18 @@ class GraphFileReaderTest {
 
     @BeforeEach
     void setUp() {
-        System.out.println("GraphFileReader.setUp...");
+        System.out.println("B3_GraphFileReader.setUp...");
     }
 
     @AfterEach
     void tearDown() {
-        System.out.println("GraphFileReader.tearDown...");
+        System.out.println("B3_GraphFileReader.tearDown...");
     }
 
     @Test
     public void testReadFile(){
         System.out.println("\n---------------ReadFile test---------------\n");
-        Optional<Map<GraphState, Set<Integer>>> mapOfInts = GraphFileReader.readFile("graphe.txt");
+        Optional<Map<B3_GraphState, Set<Integer>>> mapOfInts = B3_GraphFileReader.readFile("graphe.txt");
         if (mapOfInts.isPresent()){
             System.out.println(mapOfInts.stream().toList());
         }
@@ -34,8 +34,8 @@ class GraphFileReaderTest {
     @Test
     public void correctGrapheFile(){
         System.out.println("\n---------------CorrectGrapheFile test---------------\n");
-        assertFalse(GraphFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe.txt"));
-        assertTrue(GraphFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe1.txt"));
-        assertFalse(GraphFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe2.txt"));
+        assertFalse(B3_GraphFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe.txt"));
+        assertTrue(B3_GraphFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe1.txt"));
+        assertFalse(B3_GraphFileReader.correctGrapheFile("src/test/java/GraphePackage/graphe2.txt"));
     }
 }

@@ -2,17 +2,17 @@ package GraphePackage;
 
 import java.util.*;
 
-public class GraphState {
+public class B3_GraphState {
 
-    private List<GraphState> predecessors; // Contraintes
-    private List<GraphState> successors; // Là où ils nous mènent
+    private List<B3_GraphState> predecessors; // Contraintes
+    private List<B3_GraphState> successors; // Là où ils nous mènent
     private final int stateName;
     private final int duration;
     private int rank;
     private int soonestDate = 0;
     private int latestDate = -1;
 
-    public GraphState(int stateName, int duration) {
+    public B3_GraphState(int stateName, int duration) {
         this.stateName = stateName;
         this.duration = duration;
         this.predecessors = new ArrayList<>();
@@ -27,11 +27,11 @@ public class GraphState {
         return duration;
     }
 
-    public List<GraphState> getPredecessors() {
+    public List<B3_GraphState> getPredecessors() {
         return predecessors;
     }
 
-    public List<GraphState> getSuccessors() {
+    public List<B3_GraphState> getSuccessors() {
         return successors;
     }
 
@@ -45,8 +45,8 @@ public class GraphState {
     public String toString() {
         if (!successors.isEmpty()) {
             StringBuilder s = new StringBuilder();
-            successors = successors.stream().sorted(Comparator.comparing(GraphState::getStateName)).toList();
-            for (GraphState successor : successors) {
+            successors = successors.stream().sorted(Comparator.comparing(B3_GraphState::getStateName)).toList();
+            for (B3_GraphState successor : successors) {
                 s.append("\n(").append(rank).append(") ").append(stateName).append(" -> ").append(successor.stateName).append(" = ").append(duration);
             }
             return s.toString();
@@ -58,7 +58,7 @@ public class GraphState {
      * Add a state as a successor of a current set.
      * @param state state to had.
      */
-    public void addSuccessor(GraphState state){
+    public void addSuccessor(B3_GraphState state){
         if (successors.isEmpty()){
             successors = new ArrayList<>();
         }
@@ -69,7 +69,7 @@ public class GraphState {
      * Add a state as a predecessor of a current set.
      * @param state state to had.
      */
-    public void addPredecessor(GraphState state){
+    public void addPredecessor(B3_GraphState state){
         if (predecessors.isEmpty()){
             predecessors = new ArrayList<>();
         }
@@ -80,7 +80,7 @@ public class GraphState {
      * Remove a state from a predecessors list.
      * @param stateToRmv, the state to remove from the predecessors.
      */
-    public void removePredecessor(GraphState stateToRmv){
+    public void removePredecessor(B3_GraphState stateToRmv){
         if (!predecessors.isEmpty()){
             predecessors.remove(stateToRmv);
         }
@@ -119,7 +119,7 @@ public class GraphState {
      * @return true if yes; false otherwise
      */
     public boolean isThisSuccessor(Integer steName) {
-        for (GraphState grpState : successors){
+        for (B3_GraphState grpState : successors){
             if (steName.equals(grpState.getStateName())){
                 return true;
             }
@@ -131,9 +131,9 @@ public class GraphState {
      * Function that takes a set of graphe and add all successors and their successors of this state to this set.
      * @param grapheStateSet the set has to be initialized.
      */
-    public void returnAllSuccessors(Set<GraphState> grapheStateSet){
+    public void returnAllSuccessors(Set<B3_GraphState> grapheStateSet){
         if (this.hasSuccessor()) {
-            for (GraphState successor : successors){
+            for (B3_GraphState successor : successors){
                 if (successor.getStateName() != stateName && !grapheStateSet.contains(successor)){ // To prevent looping on itself
                     grapheStateSet.add(successor);
                     successor.returnAllSuccessors(grapheStateSet);
@@ -149,8 +149,8 @@ public class GraphState {
     public void setRank(){
         if (!predecessors.isEmpty()){
             int newrank = 0;
-            for (GraphState predecessor : predecessors){
-                if (predecessor.getRank() > newrank)
+            for (B3_GraphState predecessor : predecessors){
+                if (predecessor.getStateName() != this.stateName && predecessor.getRank() > newrank)
                     newrank = predecessor.rank;
             }
             rank = newrank + 1;
@@ -160,7 +160,7 @@ public class GraphState {
     }
 
     public void setSoonestDate(){
-        for (GraphState predecessor : predecessors){
+        for (B3_GraphState predecessor : predecessors){
             int computeDate = predecessor.getSoonestDate() + predecessor.getDuration();
             if (computeDate > soonestDate) {
                 soonestDate = computeDate;
@@ -177,7 +177,7 @@ public class GraphState {
             latestDate = soonestDate;
         }
         else {
-            for (GraphState successor : successors) {
+            for (B3_GraphState successor : successors) {
                 int computeDate = successor.getLatestDate() - duration;
                 if (latestDate < 0 || computeDate < latestDate) {
                     latestDate = computeDate;

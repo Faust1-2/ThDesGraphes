@@ -8,8 +8,8 @@ class GraphTest {
 
     @Test
     public void testinitializeGraphe(){
-        System.out.println("\n---------------Graph Test---------------\n");
-        Graph graph = new Graph("graphe.txt");
+        System.out.println("\n---------------B3_Graph Test---------------\n");
+        B3_Graph graph = new B3_Graph("graphe.txt");
         graph.initializeGraphe();
         graph.setAllRanks();
         System.out.println(graph);
@@ -19,7 +19,7 @@ class GraphTest {
     @Test
     public void testAdjacenceMatrix(){
         System.out.println("\n---------------Adjacence Matrix Test---------------\n");
-        Graph graph = new Graph("src/test/java/GraphePackage/graphe1.txt");
+        B3_Graph graph = new B3_Graph("src/test/java/GraphePackage/graphe1.txt");
         graph.initializeGraphe();
         graph.showAdjacencyMatrix();
     }
@@ -27,7 +27,7 @@ class GraphTest {
     @Test
     public void testValueMatrix(){
         System.out.println("\n---------------Value Matrix Test---------------\n");
-        Graph graph = new Graph("src/test/java/GraphePackage/graphe1.txt");
+        B3_Graph graph = new B3_Graph("src/test/java/GraphePackage/graphe1.txt");
         graph.initializeGraphe();
         graph.valueMatrix();
     }
@@ -35,7 +35,7 @@ class GraphTest {
     @Test
     public void testCircuitDetection(){
         System.out.println("\n---------------Circuit detection Test---------------\n");
-        Graph graph = new Graph("src/test/java/GraphePackage/graphe1.txt");
+        B3_Graph graph = new B3_Graph("src/test/java/GraphePackage/graphe1.txt");
         graph.initializeGraphe();
         assertFalse(graph.circuitDetection());
     }
@@ -43,7 +43,7 @@ class GraphTest {
     @Test
     public void testSchedulingGraph(){
         System.out.println("\n---------------Scheduling graph Test---------------\n");
-        Graph graph = new Graph("src/test/java/GraphePackage/graphe3.txt");
+        B3_Graph graph = new B3_Graph("src/test/java/GraphePackage/graphe3.txt");
         graph.initializeGraphe();
         graph.setAllRanks();
         System.out.println(graph);
@@ -53,7 +53,7 @@ class GraphTest {
     @Test
     public void testSoonestDate(){
         System.out.println("\n---------------Soonest date Test---------------\n");
-        Graph graph = new Graph("src/test/java/GraphePackage/Graphe-C2.txt");
+        B3_Graph graph = new B3_Graph("src/test/java/GraphePackage/Graphe-C2.txt");
         graph.initializeGraphe();
         graph.setAllRanks();
         graph.createSoonestDate();
@@ -63,7 +63,7 @@ class GraphTest {
     @Test
     public void testLatestDate(){
         System.out.println("\n---------------Latest date Test---------------\n");
-        Graph graph = new Graph("src/test/java/GraphePackage/Graphe-C3.txt");
+        B3_Graph graph = new B3_Graph("src/test/java/GraphePackage/Graphe-C3.txt");
         graph.initializeGraphe();
         graph.setAllRanks();
         graph.createSoonestDate();
