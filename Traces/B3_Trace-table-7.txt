@@ -1,0 +1,80 @@
+Matrice des valeurs
+
+      0   1   2   3   4   5   6   7   8   9  10  11 
+  0   *   *   *   *   0   *   0   0   *   *   *   * 
+  1   *   *   *   *   *   *   *   *   *   1   *   * 
+  2   *   *   *   *   *   *   *   *   *   *   *   2 
+  3   *   *   *   *   *   *   *   *   *   3   *   * 
+  4   *   4   *   *   *   4   *   *   *   *   *   * 
+  5   *   *   *   *   *   *   *   *   5   *   *   * 
+  6   *   *   *   6   *   *   *   *   *   *   6   * 
+  7   *   *   7   *   *   *   *   *   7   *   *   * 
+  8   *   *   *   *   *   *   *   *   *   8   *   * 
+  9   *   *   *   *   *   *   *   *   *   *   *   9 
+ 10   *  10   *   *   *   *   *   *   *   *   *   * 
+ 11   *   *   *   *   *   *   *   *   *   *   *   * 
+
+
+Matrice d'adjacence
+
+      0   1   2   3   4   5   6   7   8   9  10  11 
+  0   0   0   0   0   1   0   1   1   0   0   0   0 
+  1   0   0   0   0   0   0   0   0   0   1   0   0 
+  2   0   0   0   0   0   0   0   0   0   0   0   1 
+  3   0   0   0   0   0   0   0   0   0   1   0   0 
+  4   0   1   0   0   0   1   0   0   0   0   0   0 
+  5   0   0   0   0   0   0   0   0   1   0   0   0 
+  6   0   0   0   1   0   0   0   0   0   0   1   0 
+  7   0   0   1   0   0   0   0   0   1   0   0   0 
+  8   0   0   0   0   0   0   0   0   0   1   0   0 
+  9   0   0   0   0   0   0   0   0   0   0   0   1 
+ 10   0   1   0   0   0   0   0   0   0   0   0   0 
+ 11   0   0   0   0   0   0   0   0   0   0   0   0 
+
+
+Détection de circuit
+
+* Detection de circuit.
+* Methode d'elimination des points d'entree
+Points d'entree : 0 
+Supression des points d'entree
+Sommets restant : 1 2 3 4 5 6 7 8 9 10 11 
+Points d'entree : 4 6 7 
+Supression des points d'entree
+Sommets restant : 1 2 3 5 8 9 10 11 
+Points d'entree : 2 3 5 10 
+Supression des points d'entree
+Sommets restant : 1 8 9 11 
+Points d'entree : 1 8 
+Supression des points d'entree
+Sommets restant : 9 11 
+Points d'entree : 9 
+Supression des points d'entree
+Sommets restant : 11 
+Points d'entree : 11 
+Supression des points d'entree
+Sommets restant : Aucun
+-> Il n'y a pas de circuit
+Ce graphe est un graphe d'ordonnancement.
+
+
+Calcul des rangs
+
+Etat |   0 |   1 |   2 |   3 |   4 |   5 |   6 |   7 |   8 |   9 |  10 |  11 |
+Rang |   0 |   3 |   2 |   2 |   1 |   2 |   1 |   1 |   3 |   4 |   2 |   5 |
+
+
+Date au plus tôt :
+Nom  |   0 |   4 |   6 |   7 |   2 |   3 |   5 |  10 |   1 |   8 |   9 |  11 |
+Date |   0 |   0 |   0 |   0 |   7 |   6 |   4 |   6 |  16 |   9 |  17 |  26 |
+
+Date au plus tard :
+Nom  |  11 |   9 |   8 |   1 |  10 |   5 |   3 |   2 |   7 |   6 |   4 |   0 |
+Date |  26 |  17 |   9 |  16 |   6 |   4 |  14 |  24 |   2 |   0 |   0 |   0 |
+
+Marge :
+Sommet |   0 |   1 |   2 |   3 |   4 |   5 |   6 |   7 |   8 |   9 |  10 |  11 |
+Marge  |   0 |   0 |  17 |   8 |   0 |   0 |   0 |   2 |   0 |   0 |   0 |   0 |
+
+Chemin critique
+0 -> 4 -> 6 -> 5 -> 10 -> 1 -> 8 -> 9 -> 11

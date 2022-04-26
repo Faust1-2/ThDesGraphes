@@ -1,0 +1,95 @@
+Matrice des valeurs
+
+      0   1   2   3   4   5   6   7   8   9  10  11  12  13  14 
+  0   *   0   0   *   *   *   *   *   *   *   *   *   *   *   * 
+  1   *   *   *   2   *   *   2   *   *   *   *   *   *   *   * 
+  2   *   *   *   *   *   *   5   *   *   *   *   *   *   *   * 
+  3   *   *   *   *   4   *   *   *   *   *   *   *   *   *   * 
+  4   *   *   *   *   *   1   *   *   *   *   *   *   *   *   * 
+  5   *   *   *   *   *   *   *   *   *   *   *   *   *   *   9 
+  6   *   *   *   *   *   2   *   2   *   *   *   2   *   2   * 
+  7   *   *   *   *   *   *   *   *   5   *   *   *   5   *   * 
+  8   *   *   *   *   *   5   *   *   *   5   *   *   5   *   * 
+  9   *   *   *   *   *   *   *   *   *   *   9   *   9   *   * 
+ 10   *   *   *   *   *   *   *   *   *   *   *   *   2   *   * 
+ 11   *   *   *   *   *   *   *   *   *   *   *   *   *  19   * 
+ 12   *   *   *   *   *   *   *   *   *   *   *   *   *   *   5 
+ 13   *   *   *   *   *   *   *   *   *   *   *   *   *   *   1 
+ 14   *   *   *   *   *   *   *   *   *   *   *   *   *   *   * 
+
+
+Matrice d'adjacence
+
+      0   1   2   3   4   5   6   7   8   9  10  11  12  13  14 
+  0   0   1   1   0   0   0   0   0   0   0   0   0   0   0   0 
+  1   0   0   0   1   0   0   1   0   0   0   0   0   0   0   0 
+  2   0   0   0   0   0   0   1   0   0   0   0   0   0   0   0 
+  3   0   0   0   0   1   0   0   0   0   0   0   0   0   0   0 
+  4   0   0   0   0   0   1   0   0   0   0   0   0   0   0   0 
+  5   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1 
+  6   0   0   0   0   0   1   0   1   0   0   0   1   0   1   0 
+  7   0   0   0   0   0   0   0   0   1   0   0   0   1   0   0 
+  8   0   0   0   0   0   1   0   0   0   1   0   0   1   0   0 
+  9   0   0   0   0   0   0   0   0   0   0   1   0   1   0   0 
+ 10   0   0   0   0   0   0   0   0   0   0   0   0   1   0   0 
+ 11   0   0   0   0   0   0   0   0   0   0   0   0   0   1   0 
+ 12   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1 
+ 13   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1 
+ 14   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
+
+
+Détection de circuit
+
+* Detection de circuit.
+* Methode d'elimination des points d'entree
+Points d'entree : 0 
+Supression des points d'entree
+Sommets restant : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 
+Points d'entree : 1 2 
+Supression des points d'entree
+Sommets restant : 3 4 5 6 7 8 9 10 11 12 13 14 
+Points d'entree : 3 6 
+Supression des points d'entree
+Sommets restant : 4 5 7 8 9 10 11 12 13 14 
+Points d'entree : 4 7 11 
+Supression des points d'entree
+Sommets restant : 5 8 9 10 12 13 14 
+Points d'entree : 8 13 
+Supression des points d'entree
+Sommets restant : 5 9 10 12 14 
+Points d'entree : 5 9 
+Supression des points d'entree
+Sommets restant : 10 12 14 
+Points d'entree : 10 
+Supression des points d'entree
+Sommets restant : 12 14 
+Points d'entree : 12 
+Supression des points d'entree
+Sommets restant : 14 
+Points d'entree : 14 
+Supression des points d'entree
+Sommets restant : Aucun
+-> Il n'y a pas de circuit
+Ce graphe est un graphe d'ordonnancement.
+
+
+Calcul des rangs
+
+Etat |   0 |   1 |   2 |   3 |   4 |   5 |   6 |   7 |   8 |   9 |  10 |  11 |  12 |  13 |  14 |
+Rang |   0 |   1 |   1 |   2 |   3 |   5 |   2 |   3 |   4 |   5 |   6 |   3 |   7 |   4 |   8 |
+
+
+Date au plus tôt :
+Nom  |   0 |   1 |   2 |   3 |   6 |   4 |   7 |  11 |   8 |  13 |   5 |   9 |  10 |  12 |  14 |
+Date |   0 |   0 |   0 |   2 |   5 |   6 |   7 |   7 |  12 |  26 |  17 |  17 |  26 |  28 |  33 |
+
+Date au plus tard :
+Nom  |  14 |  12 |  10 |   9 |   5 |  13 |   8 |  11 |   7 |   4 |   6 |   3 |   2 |   1 |   0 |
+Date |  33 |  28 |  26 |  17 |  24 |  32 |  12 |  13 |   7 |  23 |   5 |  19 |   0 |   3 |   0 |
+
+Marge :
+Sommet |   0 |   1 |   2 |   3 |   4 |   5 |   6 |   7 |   8 |   9 |  10 |  11 |  12 |  13 |  14 |
+Marge  |   0 |   3 |   0 |  17 |  17 |   7 |   0 |   0 |   0 |   0 |   0 |   6 |   0 |   6 |   0 |
+
+Chemin critique :
+0 -> 2 -> 6 -> 7 -> 8 -> 9 -> 10 -> 12 -> 14
